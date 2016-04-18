@@ -10,8 +10,8 @@ import java.util.List;
  * Created by vitalii.levash on 18.04.2016.
  */
 public interface UserService {
-    void addUser(User user) throws LoginExistsException;
-    void delete(final int id)throws UserNotExistsException;
-    User getById(final int id) throws UserNotExistsException;
+    void addUser(User user) ;
+    void delete(final int id);
+    User getById(final int id);
     List<User> getUserList();
 }

@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public void addUser(User user) throws LoginExistsException {
+    public void addUser(User user) {
        if (userDao.findByLogin(user.getLogin())!=null){
            throw new LoginExistsException(user.getLogin());
        }
@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(final int id) throws UserNotExistsException {
+    public void delete(final int id) {
         userDao.delete(getById(id));
     }
 
 
     @Override
-    public User getById(final int id) throws UserNotExistsException {
+    public User getById(final int id)  {
         return ofNullable(userDao.getOne(id)).orElseThrow(() -> new UserNotExistsException(id));
     }
 

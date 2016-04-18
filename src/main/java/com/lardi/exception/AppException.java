@@ -1,9 +1,9 @@
 package com.lardi.exception;
 
 /**
- * Created by vitalii.levash on 18.04.2016.
+ * @author vitalii.levash
  */
-public class AppException extends Exception {
+public class AppException extends RuntimeException {
 
     public AppException(final String message) {
         super(message);
