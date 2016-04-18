@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>403</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+ <div th:if="${#strings.isEmpty(username)}">
+     <h2>You do not have permission to access this page!</h2>
+ </div>
+ <div th:unless="${#strings.isEmpty(username)}">
+     <h2>Username : ${username} <br/>You do not have permission to access this page!</h2>
+ </div>
+</div>
+</body>
+</html>
