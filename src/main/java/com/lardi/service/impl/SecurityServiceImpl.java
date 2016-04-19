@@ -1,7 +1,10 @@
 package com.lardi.service.impl;
 
+import com.lardi.dao.UserDao;
 import com.lardi.model.User;
 import com.lardi.service.SecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SecurityServiceImpl implements SecurityService {
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public int getUserId() {
@@ -24,6 +29,10 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public User getUserDetails() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
+        User user=userDao.findByLogin(name);
+        return user;
     }
 }

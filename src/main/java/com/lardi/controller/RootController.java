@@ -15,13 +15,13 @@ import java.util.Date;
 
 @Controller
 public class RootController {
-    
+    /*
     @RequestMapping("/")
     public String index() {
 
         return "index";
     }
-
+*/
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accesssDenied(ModelMap model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

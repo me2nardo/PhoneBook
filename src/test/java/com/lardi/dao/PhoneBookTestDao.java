@@ -61,4 +61,9 @@ public class PhoneBookTestDao {
        Assert.assertTrue(phoneBook.size()>0);
        System.out.println("Size:"+phoneBook.size());
     }
+    @Test
+    public void getByUser()throws Exception{
+        List<PhoneBook> list  = phoneBookDao.findByUser(1);
+        Assert.assertTrue(list.size()>0);
+    }
 }

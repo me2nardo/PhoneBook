@@ -1,37 +1,34 @@
-package com.lardi.dao;
+package com.lardi.service;
 
 import com.lardi.Application;
 import com.lardi.model.PhoneBook;
-import com.lardi.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
 /**
- * Created by vitalii.levash on 18.04.2016.
+ * Created by vitalii.levash on 19.04.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class})
 @WebAppConfiguration
-public class UserTestDao {
-
-   @Autowired
-    private UserDao userDao;
+@Transactional
+@Rollback
+public class PhoneBookServiceTest {
+    @Autowired
+    private PhoneBookService phoneBookService;
 
     @Test
-    public void testGetLogin() throws Exception{
-        User user = userDao.findByLogin("leo");
-        List<PhoneBook> list =user.getPhoneBookList();
-        System.out.println(user.getLogin());
-        Assert.assertEquals(user.getLogin(),"leo");
+    public void getPhoneListTestService() throws Exception{
+        List<PhoneBook> list = phoneBookService.getUserPhoneList(1);
         Assert.assertTrue(list.size()>0);
-
     }
 }

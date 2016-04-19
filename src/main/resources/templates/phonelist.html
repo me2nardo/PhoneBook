@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Phone List</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+<div th:if="${not #lists.isEmpty(phones)}">
+    <h2>Phone List</h2>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Surname</th>
+            <th>Name</th>
+            <th>Last name</th>
+            <th>Mob Phone</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        <tr th:each="phone : ${phones}">
+            <td th:text="${phone.id}"><a href="#">Id</a></td>
+            <td th:text="${phone.surname}"></td>
+            <td th:text="${phone.name}"></td>
+            <td th:text="${phone.lastname}"></td>
+            <td th:text="${phone.mobPhone}"></td>
+            <td th:text="${phone.phone}"></td>
+            <td th:text="${phone.email}"></td>
+            <td><a href="#">View</a></td>
+            <td><a href="#">Edit</a></td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>
