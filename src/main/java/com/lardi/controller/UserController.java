@@ -1,5 +1,6 @@
 package com.lardi.controller;
 
+import com.lardi.exception.Auth.impl.LoginExistsException;
 import com.lardi.model.User;
 import com.lardi.service.SecurityService;
 import com.lardi.service.UserService;
@@ -38,12 +39,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public String registerUser(ModelMap model, @Valid @ModelAttribute User user, BindingResult bindingResult){
-      /*
+    public String registerUser(ModelMap model, @Valid @ModelAttribute User user, BindingResult bindingResult) throws LoginExistsException{
+
         if (bindingResult.hasErrors()) {
             return "userform";
         }
-        */
+
         userService.addUser(user);
         model.addAttribute("info", "Thanks for registration! You can login with your credentials!");
         return "login";

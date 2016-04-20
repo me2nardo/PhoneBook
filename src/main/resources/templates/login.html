@@ -9,6 +9,7 @@
 
     <div class="alert alert-danger" role="alert"  th:unless="${#strings.isEmpty(error)}" th:text="${error}"></div>
     <div class="alert alert-success" role="alert" th:unless="${#strings.isEmpty(msg)}" th:text="${msg}"></div>
+    <div class="alert alert-success" role="alert" th:unless="${#strings.isEmpty(info)}" th:text="${info}"></div>
 
     <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-default">

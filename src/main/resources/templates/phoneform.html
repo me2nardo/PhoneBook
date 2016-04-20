@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Phone Form</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+<div class="container">
+    <form class="form-horizontal" th:action="@{/add}" th:method="post" th:object="${phoneBook}">
+        <div class="alert alert-danger" role="alert"  th:if="${#fields.hasErrors('*')}" >
+            <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+        </div>
+        <div id="legend">
+            <legend class="">Phone Information</legend>
+        </div>
+        <div class="form-group">
+            <label for="InputSurname" class="col-sm-2 control-label">Surname</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputSurname" placeholder="Surname" th:name="surname"
+                       th:field="*{surname}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputName" class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputName" placeholder="Name"
+                       th:name="name" th:field="*{name}"
+                       th:required="true"/>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputLastName" class="col-sm-2 control-label">Lastname</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputLastName" placeholder="Lastname" th:name="lastname" th:required="true"
+                        th:field="*{lastname}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputAddress" class="col-sm-2 control-label">Address</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputAddress" placeholder="Address" th:name="address" th:required="true"
+                        th:field="*{address}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputMob" class="col-sm-2 control-label">MobPhone</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputMob" placeholder="Address" th:name="mobphone" th:required="true"
+                       th:field="*{mobPhone}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputPhone" class="col-sm-2 control-label">Phone</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputPhone" placeholder="phonr" th:name="phone"
+                       th:field="*{phone}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputEmail" class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputEmail" placeholder="Email" th:name="email"
+                       th:field="*{email}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="InputInfo" class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="InputInfo" placeholder="Email" th:name="email"
+                       th:field="*{userInfo}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success">Add Phone</button>
+                <button type="reset" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

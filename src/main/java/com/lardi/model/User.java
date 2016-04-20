@@ -1,5 +1,7 @@
 package com.lardi.model;
 
+import com.lardi.util.validate.Login;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,6 +18,7 @@ public class User {
     @Column(unique = true, nullable = false, length = 30)
     @NotNull
     @Size(min = 5)
+    @Login(message = "Login must me Latin")
     private String login;
     @Column(nullable = false, length = 40)
     @NotNull

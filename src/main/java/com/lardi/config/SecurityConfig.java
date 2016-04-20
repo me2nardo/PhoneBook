@@ -36,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**" ).permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/user/register**").permitAll()
+                .antMatchers("/404").permitAll()
                 .and();
 
         httpSecurity.authorizeRequests().antMatchers("/**").authenticated();
