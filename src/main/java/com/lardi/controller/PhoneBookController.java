@@ -1,5 +1,6 @@
 package com.lardi.controller;
 
+import com.lardi.dto.FilterCriteria;
 import com.lardi.exception.web.NotFoundException;
 import com.lardi.model.PhoneBook;
 import com.lardi.model.User;
@@ -10,10 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -24,7 +22,7 @@ import static java.util.Optional.ofNullable;
  * @author vitalii.levash
  */
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = {"/", "/phone"})
 public class PhoneBookController {
     @Autowired
     private PhoneBookService phoneBookService;
@@ -45,7 +43,8 @@ public class PhoneBookController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addPhoneItemPost(ModelMap model, @Valid @ModelAttribute("phoneBook") PhoneBook phoneBook, BindingResult bindingResult) {
+    public String addPhoneItemPost(ModelMap model, @Valid @ModelAttribute("phoneBook") PhoneBook phoneBook,
+                                   BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "phoneform";
@@ -53,8 +52,8 @@ public class PhoneBookController {
         User user = securityService.getUserDetails();
         phoneBook.setUser(user);
         phoneBookService.addPhoneItem(phoneBook);
-        model.addAttribute("info", "Your phone add!");
-        return "phonelist";
+        //model.addAttribute("info", "Your phone add!");
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
@@ -83,4 +82,14 @@ public class PhoneBookController {
             throw new AccessDeniedException("Forbidden edit not yours items");
         }
     }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public String findBook(@ModelAttribute("filterCriteria") FilterCriteria filterCriteria,
+                           BindingResult bindingResult, ModelMap model) {
+        Integer user = securityService.getUserId();
+        filterCriteria.setUser_id(user);
+        model.addAttribute("phones", phoneBookService.findPhones(filterCriteria));
+        return "phonelist";
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.lardi.service.impl;
 
 import com.lardi.dao.PhoneBookDao;
+import com.lardi.dto.FilterCriteria;
 import com.lardi.model.PhoneBook;
 import com.lardi.service.PhoneBookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,12 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     @Override
-    public void editPhoneItem(PhoneBook phoneBook) {
-
+    public PhoneBook getById(int id) {
+        return phoneBookDao.getOne(id);
     }
 
     @Override
-    public PhoneBook getById(int id) {
-        return phoneBookDao.getOne(id);
+    public List<PhoneBook> findPhones(FilterCriteria filterCriteria) {
+        return null;
     }
 }

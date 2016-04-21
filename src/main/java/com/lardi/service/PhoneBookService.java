@@ -1,5 +1,6 @@
 package com.lardi.service;
 
+import com.lardi.dto.FilterCriteria;
 import com.lardi.model.PhoneBook;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public interface PhoneBookService {
     void addPhoneItem(PhoneBook phoneBook);
     List<PhoneBook> getUserPhoneList(int user_id);
     void deletePhoneItem(final int user_id);
-    void editPhoneItem(PhoneBook phoneBook);
     PhoneBook getById(final int id);
+    List<PhoneBook> findPhones(FilterCriteria filterCriteria);
 }

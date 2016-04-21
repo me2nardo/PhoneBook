@@ -9,7 +9,7 @@
 <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
 <div class="container">
     <form class="form-horizontal" th:action="@{/add}" th:method="post" th:object="${phoneBook}">
-        <input th:hidden="id"/>
+        <input type="hidden" th:field="*{id}"/>
         <div class="alert alert-danger" role="alert"  th:if="${#fields.hasErrors('*')}" >
             <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
         </div>

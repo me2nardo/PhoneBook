@@ -20,7 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
-    //TODO:Add handler org.springframework.security.authentication.InternalAuthenticationServiceException: null
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
        auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
@@ -47,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error")
                 .usernameParameter("j_login")
                 .passwordParameter("j_password")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/phone")
+
                 .permitAll();
 
         httpSecurity.logout()
