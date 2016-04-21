@@ -1,5 +1,6 @@
 package com.lardi.model;
 
+import com.lardi.util.validate.Phone;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -30,8 +31,10 @@ public class PhoneBook {
     private String address;
     @Column(nullable = false, length = 15)
     @NotNull
+    @Phone
     private String mobPhone;
     @Column(length = 15)
+    @Phone
     private String phone;
     @Column(length = 30)
     @Email
