@@ -20,7 +20,7 @@ public class User {
     @Size(min = 5)
     @Login(message = "Login must me Latin")
     private String login;
-    @Column(nullable = false, length = 40)
+    @Column(nullable = false, length = 100)
     @NotNull
     private String password;
     @Column(nullable = false, length = 100)

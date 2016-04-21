@@ -6,12 +6,13 @@
 </head>
 <body>
 <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+<!--/*/ <th:block th:include="fragments/search :: search"></th:block> /*/-->
 <div class="alert alert-success" role="alert" th:unless="${#strings.isEmpty(info)}" th:text="${info}"></div>
 <div th:if="${not #lists.isEmpty(phones)}">
     <h2>Phone List</h2>
     <table class="table table-striped">
         <tr>
-            <th>ID</th>
+
             <th>Surname</th>
             <th>Name</th>
             <th>Last name</th>
@@ -23,15 +24,15 @@
         </tr>
 
         <tr th:each="phone : ${phones}">
-            <td th:text="${phone.id}"><a href="#">Id</a></td>
+
             <td th:text="${phone.surname}"></td>
             <td th:text="${phone.name}"></td>
             <td th:text="${phone.lastname}"></td>
             <td th:text="${phone.mobPhone}"></td>
             <td th:text="${phone.phone}"></td>
             <td th:text="${phone.email}"></td>
-            <td><a href="#">View</a></td>
-            <td><a href="#">Edit</a></td>
+            <td><a th:href="@{'/delete/'+${phone.id}}">Delete</a></td>
+            <td><a th:href="@{'/edit/'+${phone.id}}">Edit</a></td>
         </tr>
     </table>
 

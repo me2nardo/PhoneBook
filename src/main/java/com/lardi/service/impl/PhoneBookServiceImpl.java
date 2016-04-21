@@ -22,7 +22,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     @Override
     @Transactional
     public void addPhoneItem(PhoneBook phoneBook) {
-
+       phoneBookDao.saveAndFlush(phoneBook);
     }
 
     @Override
@@ -32,11 +32,16 @@ public class PhoneBookServiceImpl implements PhoneBookService {
 
     @Override
     public void deletePhoneItem(final int user_id) {
-
+      phoneBookDao.delete(user_id);
     }
 
     @Override
     public void editPhoneItem(PhoneBook phoneBook) {
 
+    }
+
+    @Override
+    public PhoneBook getById(int id) {
+        return phoneBookDao.getOne(id);
     }
 }

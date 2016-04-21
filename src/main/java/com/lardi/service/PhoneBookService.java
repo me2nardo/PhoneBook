@@ -12,4 +12,5 @@ public interface PhoneBookService {
     List<PhoneBook> getUserPhoneList(int user_id);
     void deletePhoneItem(final int user_id);
     void editPhoneItem(PhoneBook phoneBook);
+    PhoneBook getById(final int id);
 }

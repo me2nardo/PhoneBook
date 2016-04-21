@@ -9,6 +9,7 @@
 <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
 <div class="container">
     <form class="form-horizontal" th:action="@{/add}" th:method="post" th:object="${phoneBook}">
+        <input th:hidden="id"/>
         <div class="alert alert-danger" role="alert"  th:if="${#fields.hasErrors('*')}" >
             <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
         </div>
@@ -19,7 +20,7 @@
             <label for="InputSurname" class="col-sm-2 control-label">Surname</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="InputSurname" placeholder="Surname" th:name="surname"
-                       th:field="*{surname}"/>
+                       th:field="*{surname}" th:required="true"/>
             </div>
         </div>
         <div class="form-group">
@@ -55,7 +56,7 @@
         <div class="form-group">
             <label for="InputPhone" class="col-sm-2 control-label">Phone</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="InputPhone" placeholder="phonr" th:name="phone"
+                <input type="text" class="form-control" id="InputPhone" placeholder="phone" th:name="phone"
                        th:field="*{phone}"/>
             </div>
         </div>
@@ -67,9 +68,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="InputInfo" class="col-sm-2 control-label">Email</label>
+            <label for="InputInfo" class="col-sm-2 control-label">UserInfo</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="InputInfo" placeholder="Email" th:name="email"
+                <input type="text" class="form-control" id="InputInfo" placeholder="user information" th:name="userInfo"
                        th:field="*{userInfo}"/>
             </div>
         </div>

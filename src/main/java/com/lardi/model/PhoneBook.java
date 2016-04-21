@@ -31,17 +31,16 @@ public class PhoneBook {
     private String address;
     @Column(nullable = false, length = 15)
     @NotNull
-    @Phone
+    @Phone(message = "Allowed format +38(066)1234567 only UA")
     private String mobPhone;
     @Column(length = 15)
-    @Phone
+    @Phone(message = "Allowed format +38(066)1234567 only UA")
     private String phone;
     @Column(length = 30)
     @Email
     private String email;
-    @ManyToOne(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "userid")
-    @NotNull
     private User user;
 
 

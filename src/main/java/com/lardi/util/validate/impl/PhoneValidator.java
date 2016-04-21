@@ -16,6 +16,7 @@ public class PhoneValidator implements ConstraintValidator<Phone, String> {
 
     @Override
     public boolean isValid(String phone, ConstraintValidatorContext constraintValidatorContext) {
+        if (phone.length()==0) return true; //Empty for mob;
         if (phone.matches("^\\+38\\(\\d{3}\\)\\d{7}")){
             return true;
         }else {
