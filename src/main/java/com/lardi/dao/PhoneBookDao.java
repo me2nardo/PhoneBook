@@ -10,7 +10,7 @@ import java.util.List;
 /**
  *@author vitalii.levash
  */
-public interface PhoneBookDao extends JpaRepository<PhoneBook,Integer> {
+public interface PhoneBookDao extends JpaRepository<PhoneBook,Integer>,PhoneBookFilterDao {
     @Query("SELECT b FROM PhoneBook b WHERE b.email=:uemail")
     PhoneBook findByMail(@Param("uemail") String email);
 

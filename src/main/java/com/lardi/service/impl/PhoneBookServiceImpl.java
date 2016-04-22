@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * Created by vitalii.levash on 19.04.2016.
+ * @author vitalii.levash
  */
 @Service
 public class PhoneBookServiceImpl implements PhoneBookService {
@@ -27,6 +27,7 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PhoneBook> getUserPhoneList(int user_id) {
         return phoneBookDao.findByUser(user_id);
     }
@@ -37,12 +38,14 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PhoneBook getById(int id) {
         return phoneBookDao.getOne(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<PhoneBook> findPhones(FilterCriteria filterCriteria) {
-        return null;
+        return phoneBookDao.filterPhoneItems(filterCriteria);
     }
 }

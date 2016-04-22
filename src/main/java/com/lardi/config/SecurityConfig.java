@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error")
                 .usernameParameter("j_login")
                 .passwordParameter("j_password")
-                .defaultSuccessUrl("/phone")
+                .defaultSuccessUrl("/")
 
                 .permitAll();
 
