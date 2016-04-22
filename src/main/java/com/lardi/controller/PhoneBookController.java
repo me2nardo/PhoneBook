@@ -22,7 +22,7 @@ import static java.util.Optional.ofNullable;
  * @author vitalii.levash
  */
 @Controller
-@RequestMapping(value = {"/", "/phone"})
+@RequestMapping(value = {"/"})
 public class PhoneBookController {
     @Autowired
     private PhoneBookService phoneBookService;
@@ -32,6 +32,7 @@ public class PhoneBookController {
     @RequestMapping(method = RequestMethod.GET)
     public String getUserPhoneList(ModelMap model) {
         List<PhoneBook> list = phoneBookService.getUserPhoneList(securityService.getUserId());
+        model.addAttribute("filterCriteria",new FilterCriteria());
         model.addAttribute("phones", list);
         return "phonelist";
     }
@@ -85,7 +86,7 @@ public class PhoneBookController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String findBook(@ModelAttribute("filterCriteria") FilterCriteria filterCriteria,
-                           BindingResult bindingResult, ModelMap model) {
+                            ModelMap model) {
         Integer user = securityService.getUserId();
         filterCriteria.setUser_id(user);
         model.addAttribute("phones", phoneBookService.findPhones(filterCriteria));

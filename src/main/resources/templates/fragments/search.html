@@ -7,53 +7,63 @@
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
             th:href="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
-    <link           th:href="@{css/guru.css}" rel="stylesheet" media="screen"/>
+    <link th:href="@{css/guru.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
+
+
 <div th:fragment="search">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="input-group" id="adv-search">
-                    <input type="text" class="form-control" placeholder="Search phones (place mobile)"/>
+                <form class="form-horizontal" role="form" th:action="@{/search}" th:method="post" th:object="${filterCriteria}" >
+                    <div class="input-group" id="adv-search">
+                        <input type="text" class="form-control" placeholder="Search for phones(mob)"  th:name="mobPhone"
+                             th:field="*{mobPhone}" />
 
-                    <div class="input-group-btn">
-                        <div class="btn-group" role="group">
-                            <div class="dropdown dropdown-lg">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                        aria-expanded="false"><span class="caret"></span></button>
-                                <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                    <form class="form-horizontal" role="form">
-
+                        <div class="input-group-btn">
+                            <div class="btn-group" role="group">
+                                <div class="dropdown dropdown-lg">
+                                    <button type="button" class="btn btn-default dropdown-toggle"
+                                            data-toggle="dropdown"
+                                            aria-expanded="false"><span class="caret"></span></button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
                                         <div class="form-group">
                                             <label for="contain">Phone</label>
-                                            <input class="form-control" type="Phone" placeholder="Phone"/>
+                                            <input type="text" class="form-control"  placeholder="Phone"
+                                                th:name="phone" th:field="*{phone}"  />
                                         </div>
                                         <div class="form-group">
                                             <label for="contain">Surname</label>
-                                            <input class="form-control" type="text" placeholder="Surname"/>
+                                            <input class="form-control" type="text" placeholder="Surname"
+                                                 th:name="surname" th:field="*{surname}"  />
                                         </div>
                                         <div class="form-group">
                                             <label for="contain">Name</label>
-                                            <input class="form-control" type="text" placeholder="Name"/>
+                                            <input class="form-control" type="text" placeholder="Name"
+                                                 th:name="name" th:field="*{name}"  />
                                         </div>
                                         <div class="form-group">
                                             <label for="contain">Lastname</label>
-                                            <input class="form-control" type="text" placeholder="Lastname"/>
+                                            <input class="form-control" type="text" placeholder="Lastname"
+                                               th:name="lastname" th:field="*{lastname}"   />
                                         </div>
-                                        <button type="submit" class="btn btn-primary"><span
-                                                class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                                    </form>
+
+                                    </div>
                                 </div>
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"
+                                                                                    aria-hidden="true"></span></button>
                             </div>
-                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search"
-                                                                                aria-hidden="true"></span></button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
+
         </div>
+
+
     </div>
+
 </div>
 </body>
 </html>
