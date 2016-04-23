@@ -26,7 +26,7 @@ import java.util.Properties;
 @EntityScan(basePackages = {"com.lardi.model"})
 @EnableJpaRepositories(basePackages = {"com.lardi.dao"})
 @EnableTransactionManagement
-@PropertySource("classpath:db.properties")
+@PropertySource("file:${LardiConf}/db.properties")
 public class RepositoryConfig {
     private static final String PROP_DATABASE_DRIVER = "db.driver";
     private static final String PROP_DATABASE_PASSWORD = "db.password";
@@ -40,6 +40,8 @@ public class RepositoryConfig {
 
     private static final String PROP_FORMAT_SQL="hibernate.format_sql";
     private static final String PROP_SHOW_SQL_COMENT="hibernate.use_sql_comments";
+
+
 
     @Resource
     private Environment env;
