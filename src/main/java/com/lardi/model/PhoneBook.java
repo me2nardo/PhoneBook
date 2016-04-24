@@ -19,11 +19,11 @@ public class PhoneBook {
     private String userInfo;
     @Column(nullable = false, length = 30)
     @NotNull
-    @Size(min = 4)
+    @Size(min = 3)
     private String surname;
     @Column(nullable = false, length = 30)
     @NotNull
-    @Size(min = 4)
+    @Size(min = 3)
     private String name;
     @Column(nullable = false, length = 30)
     private String lastname;

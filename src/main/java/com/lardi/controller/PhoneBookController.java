@@ -65,7 +65,7 @@ public class PhoneBookController {
         if (user.equals(phoneBook.getUser().getId())) {
             phoneBookService.deletePhoneItem(phone_id);
             model.addAttribute("info", "Your phone deleted!");
-            return "phonelist";
+            return "redirect:/";
         } else {
             throw new AccessDeniedException("Forbidden delete not yours items");
         }

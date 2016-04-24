@@ -44,8 +44,12 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "userform";
         }
+        try {
+            userService.addUser(user);
+        }catch (LoginExistsException e){
+            throw new LoginExistsException();
+        }
 
-        userService.addUser(user);
         model.addAttribute("info", "Thanks for registration! You can login with your credentials!");
         return "login";
     }

@@ -27,10 +27,10 @@ public class UserTestDao {
 
     @Test
     public void testGetLogin() throws Exception{
-        User user = userDao.findByLogin("leo");
+        User user = userDao.findByLogin("leonard");
         List<PhoneBook> list =user.getPhoneBookList();
         System.out.println(user.getLogin());
-        Assert.assertEquals(user.getLogin(),"leo");
+        Assert.assertEquals(user.getLogin(),"leonard");
         Assert.assertTrue(list.size()>0);
 
     }

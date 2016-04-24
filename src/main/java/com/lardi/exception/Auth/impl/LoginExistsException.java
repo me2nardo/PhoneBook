@@ -10,6 +10,6 @@ public class LoginExistsException extends AuthException {
         super("Login for user exists");
     }
     public LoginExistsException(final String login){
-        super(String.format("Email '%s' already exists in DB.", login));
+        super(String.format("Login '%s' already exists in DB.", login));
     }
 }

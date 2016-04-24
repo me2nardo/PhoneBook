@@ -13,5 +13,6 @@ public interface PhoneBookService {
     List<PhoneBook> getUserPhoneList(int user_id);
     void deletePhoneItem(final int user_id);
     PhoneBook getById(final int id);
+    PhoneBook getByEmail(final String email);
     List<PhoneBook> findPhones(FilterCriteria filterCriteria);
 }

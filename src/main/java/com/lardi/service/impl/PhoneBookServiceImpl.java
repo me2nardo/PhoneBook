@@ -48,4 +48,9 @@ public class PhoneBookServiceImpl implements PhoneBookService {
     public List<PhoneBook> findPhones(FilterCriteria filterCriteria) {
         return phoneBookDao.filterPhoneItems(filterCriteria);
     }
+
+    @Override
+    public PhoneBook getByEmail(String email) {
+        return phoneBookDao.findByMail(email);
+    }
 }

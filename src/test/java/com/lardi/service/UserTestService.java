@@ -26,7 +26,7 @@ public class UserTestService {
 
     @Test
     public void testServiceGetLogin() throws Exception {
-        User user = userService.findByLogin("leo");
-        Assert.assertEquals(user.getLogin(),"leo");
+        User user = userService.findByLogin("leonard");
+        Assert.assertEquals(user.getLogin(),"leonard");
     }
 }

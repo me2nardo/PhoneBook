@@ -19,7 +19,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Created by leo on 16.04.2016.
+ * @author vitalii.levash
  */
 @Configuration
 @EnableAutoConfiguration
@@ -27,6 +27,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = {"com.lardi.dao"})
 @EnableTransactionManagement
 @PropertySource("file:${LardiConf}/db.properties")
+//@PropertySource("classpath:db.properties")
 public class RepositoryConfig {
     private static final String PROP_DATABASE_DRIVER = "db.driver";
     private static final String PROP_DATABASE_PASSWORD = "db.password";

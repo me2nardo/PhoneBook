@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by vitalii.levash on 18.04.2016.
+ * @author vitalii.levash
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class})
@@ -32,19 +32,21 @@ public class PhoneBookTestDao {
     @Test
     @Transactional
     public void addPhoneItem() throws Exception{
-        User user = userDao.findOne(1);
+        User user = userDao.findByLogin("leonard");
+        System.out.println(user.getId());
         PhoneBook phoneBook = new PhoneBook();
-        phoneBook.setEmail("mr.roo@gmail.com");
+        phoneBook.setEmail("john@gmail.com");
         phoneBook.setAddress("Kiev");
         phoneBook.setLastname("Smith");
         phoneBook.setName("John");
         phoneBook.setSurname("Smith");
-        phoneBook.setMobPhone("+38097047703");
+        phoneBook.setMobPhone("+38(066)1234567");
+        phoneBook.setPhone("+38(066)1234567");
 
         phoneBook.setUser(user);
 
         phoneBookDao.save(phoneBook);
-        PhoneBook uphoneBook = phoneBookDao.findByMail("mr.roo@gmail.com");
+        PhoneBook uphoneBook = phoneBookDao.findByMail("john@gmail.com");
 
         Assert.assertEquals(phoneBook.getId(),uphoneBook.getId());
     }
@@ -52,7 +54,7 @@ public class PhoneBookTestDao {
     @Test
     public void getPhoneItem() throws Exception{
         PhoneBook phoneBook = phoneBookDao.findOne(1);
-        Assert.assertEquals(phoneBook.getEmail(),"alfa@alfa.com");
+        Assert.assertEquals(phoneBook.getEmail(),"ajohn@gmail.com");
     }
 
     @Test

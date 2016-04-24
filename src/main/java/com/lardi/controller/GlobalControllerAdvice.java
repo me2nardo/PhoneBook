@@ -1,8 +1,6 @@
-package com.lardi.controller.handler;
+package com.lardi.controller;
 
-import com.lardi.exception.AppException;
 import com.lardi.exception.Auth.impl.LoginExistsException;
-import com.lardi.exception.Auth.impl.UserNotExistsException;
 import com.lardi.exception.web.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,6 +10,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author vitalii.levash
@@ -25,10 +25,18 @@ public class GlobalControllerAdvice {
         return "404";
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ModelAndView exception(Exception exception, WebRequest request) {
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("info", "some info");
+        return modelAndView;
+    }
+
     @ExceptionHandler(LoginExistsException.class)
     public String loginExistsHandler(LoginExistsException e, ModelMap model){
-        model.addAttribute("info",e.getMessage());
-        return "userform";
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("info",e.getMessage());
+        return "error";
     }
 
     @ExceptionHandler(AccessDeniedException.class)
