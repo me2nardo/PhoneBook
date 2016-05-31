@@ -31,6 +31,7 @@
         <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
+
         <!--WebJars-->
         <dependency>
             <groupId>org.webjars</groupId>
@@ -67,10 +68,21 @@
             <scope>test</scope>
         </dependency>
         <!-- end::tests[] -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>tools</artifactId>
+                    <groupId>com.sun</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <properties>
         <java.version>1.8</java.version>
+        <hikaricp.version>2.4.6</hikaricp.version>
     </properties>
 
     <build>

@@ -23,10 +23,9 @@ import java.util.Properties;
  */
 @Configuration
 @EnableAutoConfiguration
-@EntityScan(basePackages = {"com.lardi.model"})
-@EnableJpaRepositories(basePackages = {"com.lardi.dao"})
+@EntityScan(basePackages = {"org.rbo.model"})
+@EnableJpaRepositories(basePackages = {"org.rbo.dao"})
 @EnableTransactionManagement
-//@PropertySource("file:${LardiConf}/db.properties")
 @PropertySource("classpath:db.properties")
 public class RepositoryConfig {
     private static final String PROP_DATABASE_DRIVER = "db.driver";
