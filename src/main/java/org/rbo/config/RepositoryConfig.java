@@ -1,22 +1,24 @@
 package org.rbo.config;
 
 
-import org.hibernate.jpa.HibernatePersistenceProvider;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.Resource;
+import javax.persistence.*;
 import javax.sql.DataSource;
-import java.util.Properties;
 
 /**
  * @author vitalii.levash
@@ -26,64 +28,64 @@ import java.util.Properties;
 @EntityScan(basePackages = {"org.rbo.model"})
 @EnableJpaRepositories(basePackages = {"org.rbo.dao"})
 @EnableTransactionManagement
-@PropertySource("classpath:db.properties")
 public class RepositoryConfig {
-    private static final String PROP_DATABASE_DRIVER = "db.driver";
-    private static final String PROP_DATABASE_PASSWORD = "db.password";
-    private static final String PROP_DATABASE_URL = "db.url";
-    private static final String PROP_DATABASE_USERNAME = "db.username";
-    private static final String PROP_HIBERNATE_DIALECT = "hibernate.dialect";
-    private static final String PROP_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
-    private static final String PROP_ENTITYMANAGER_PACKAGES_TO_SCAN = "db.entitymanager.packages.to.scan";
-    private static final String PROP_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
-    private static final String PROP_LAZY_LOAD="hibernate.enable_lazy_load_no_trans";
-
-    private static final String PROP_FORMAT_SQL="hibernate.format_sql";
-    private static final String PROP_SHOW_SQL_COMENT="hibernate.use_sql_comments";
 
 
+    /**
+     * Creates and configures the HikariCP datasource bean.
+     *
+     * @param env The runtime environment of  our application.
+     * @return
+     */
+    @Bean(destroyMethod = "close")
+    @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    public DataSource dataSource(DataSourceProperties dataSourceProperties) {
 
-    @Resource
-    private Environment env;
+        HikariConfig dataSourceConfig = new HikariConfig();
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName(env.getRequiredProperty(PROP_DATABASE_DRIVER));
-        ds.setUrl(env.getRequiredProperty(PROP_DATABASE_URL));
-        ds.setUsername(env.getRequiredProperty(PROP_DATABASE_USERNAME));
-        ds.setPassword(env.getRequiredProperty(PROP_DATABASE_PASSWORD));
-        return ds;
+        dataSourceConfig.setDriverClassName(dataSourceProperties.getDriverClassName());
+        dataSourceConfig.setJdbcUrl(dataSourceProperties.getUrl());
+        dataSourceConfig.setUsername(dataSourceProperties.getUsername());
+        dataSourceConfig.setPassword(dataSourceProperties.getPassword());
+
+        return new HikariDataSource(dataSourceConfig);
+
     }
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        em.setPackagesToScan(env.getRequiredProperty(PROP_ENTITYMANAGER_PACKAGES_TO_SCAN).split(","));
-        em.setDataSource(dataSource());
-        em.setPersistenceUnitName("TempOP");
-        em.setJpaProperties(getHibernateProperties());
-        return em;
-    }
+    /**
+     * Creates the bean that creates the JPA entity manager factory.
+     *
+     * @param dataSource The datasource that provides the database connections.
+     * @param env        The runtime environment of  our application.
+     * @return
+     */
 
     @Bean
-    public JpaTransactionManager transactionManager() {
+    @ConfigurationProperties(prefix = "spring.jpa")
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Environment env, RepositoryContext repositoryContext) {
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource);
+        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        entityManagerFactoryBean.setPackagesToScan("org.rbo.model");
+        entityManagerFactoryBean.setPersistenceUnitName(repositoryContext.getPersistenceUnitName());
+
+        entityManagerFactoryBean.setJpaProperties(repositoryContext.getProperties());
+
+        return entityManagerFactoryBean;
+    }
+
+    /**
+     * Creates the transaction manager bean that integrates the used JPA provider with the
+     * Spring transaction mechanism.
+     *
+     * @param entityManagerFactory The used JPA entity manager factory.
+     * @return
+     */
+    @Bean
+    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
 
-    private Properties getHibernateProperties() {
-        Properties properties = new Properties();
-        properties.put(PROP_HIBERNATE_DIALECT, env.getRequiredProperty(PROP_HIBERNATE_DIALECT));
-        properties.put(PROP_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROP_HIBERNATE_SHOW_SQL));
-        properties.put(PROP_HIBERNATE_HBM2DDL_AUTO, env.getRequiredProperty(PROP_HIBERNATE_HBM2DDL_AUTO));
-        properties.put(PROP_LAZY_LOAD,env.getRequiredProperty(PROP_LAZY_LOAD));
-        properties.put(PROP_FORMAT_SQL,env.getRequiredProperty(PROP_FORMAT_SQL));
-        properties.put(PROP_SHOW_SQL_COMENT,env.getRequiredProperty(PROP_SHOW_SQL_COMENT));
-
-        return properties;
-    }
 }

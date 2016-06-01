@@ -6,7 +6,7 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     datasource:
         url: jdbc:mysql://localhost:3306/td
-        name: dev
+        name: prod
         username: root
         password: qwe123qwe
         hikari:
