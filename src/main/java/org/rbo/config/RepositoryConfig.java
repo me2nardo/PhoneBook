@@ -1,24 +1,30 @@
 package org.rbo.config;
 
 
+import org.h2.tools.*;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.*;
+
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * @author vitalii.levash
@@ -38,7 +44,9 @@ public class RepositoryConfig {
      * @return
      */
     @Bean(destroyMethod = "close")
+
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
+    //@ConditionalOnExpression("#{!environment.acceptsProfiles('" + Constants.SPRING_PROFILE_DEVELOPMENT + "') ")
     public DataSource dataSource(DataSourceProperties dataSourceProperties) {
 
         HikariConfig dataSourceConfig = new HikariConfig();
@@ -47,6 +55,7 @@ public class RepositoryConfig {
         dataSourceConfig.setJdbcUrl(dataSourceProperties.getUrl());
         dataSourceConfig.setUsername(dataSourceProperties.getUsername());
         dataSourceConfig.setPassword(dataSourceProperties.getPassword());
+
 
         return new HikariDataSource(dataSourceConfig);
 
@@ -82,10 +91,22 @@ public class RepositoryConfig {
      * @return
      */
     @Bean
-    JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
+    /**
+     * Open the TCP port for the H2 database, so it is available remotely.
+     *
+     * @return the H2 database TCP server
+     * @throws SQLException if the server failed to start
+     */
+    @Bean(initMethod = "start", destroyMethod = "stop")
+    @Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
+    public Server h2TCPServer() throws SQLException {
+        return Server.createTcpServer("-tcp","-tcpAllowOthers");
+    }
+
 
 }

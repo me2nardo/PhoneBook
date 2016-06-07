@@ -5,10 +5,10 @@ spring:
         livereload:
             enabled: true
     datasource:
-        url: jdbc:mysql://localhost:3306/td
+        url: jdbc:h2:mem:tda
         name: dev
-        username: root
-        password: qwe123qwe
+        username: sa
+        password: sa
         hikari:
                     data-source-properties:
                         cachePrepStmts: true
@@ -16,7 +16,7 @@ spring:
                         prepStmtCacheSqlLimit: 2048
                         useServerPrepStmts: true
     jpa:
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database-platform: org.hibernate.dialect.H2Dialect
         database: MYSQL
         persistenceUnitName: DEV-RBO
         properties:
@@ -25,6 +25,7 @@ spring:
             hibernate.format_sql: "true"
             hibernate.show_sql: "true"
             hibernate.enable_lazy_load_no_trans: "true"
+            hibernate.hbm2ddl.auto: "update"
     data:
         elasticsearch:
             cluster-name:
