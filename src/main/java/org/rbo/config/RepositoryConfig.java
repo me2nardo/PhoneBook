@@ -1,21 +1,22 @@
 package org.rbo.config;
 
 
-import org.h2.tools.*;
+import org.flywaydb.core.Flyway;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.h2.tools.Server;
+import org.rbo.util.Constants;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -44,7 +45,6 @@ public class RepositoryConfig {
      * @return
      */
     @Bean(destroyMethod = "close")
-
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
     //@ConditionalOnExpression("#{!environment.acceptsProfiles('" + Constants.SPRING_PROFILE_DEVELOPMENT + "') ")
     public DataSource dataSource(DataSourceProperties dataSourceProperties) {
@@ -102,11 +102,22 @@ public class RepositoryConfig {
      * @return the H2 database TCP server
      * @throws SQLException if the server failed to start
      */
+
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
     public Server h2TCPServer() throws SQLException {
         return Server.createTcpServer("-tcp","-tcpAllowOthers");
     }
+/*
+    @Bean
+    public Flyway flyway(){
+        Flyway flyway = new Flyway();
+        flyway.setBaselineOnMigrate(true);
 
+        flyway.setDataSource("jdbc:h2:mem:testdb","sa","sa");
+        flyway.migrate();
+        return flyway;
+    }
+    */
 
 }

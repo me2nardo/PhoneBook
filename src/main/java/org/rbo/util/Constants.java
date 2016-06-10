@@ -1,4 +1,4 @@
-package org.rbo.config;
+package org.rbo.util;
 
 /**
  * @author vitalii.levash

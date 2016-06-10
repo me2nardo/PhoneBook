@@ -5,7 +5,7 @@ spring:
         livereload:
             enabled: true
     datasource:
-        url: jdbc:h2:mem:tda
+        url: jdbc:h2:mem:testdb
         name: dev
         username: sa
         password: sa
@@ -25,7 +25,7 @@ spring:
             hibernate.format_sql: "true"
             hibernate.show_sql: "true"
             hibernate.enable_lazy_load_no_trans: "true"
-            hibernate.hbm2ddl.auto: "update"
+
     data:
         elasticsearch:
             cluster-name:
@@ -35,6 +35,8 @@ spring:
                   logs: target/elasticsearch/log
                   data: target/elasticsearch/data
     thymeleaf.cache: false
+
+    loggining.level: DEBUG
 
 server:
     port: 8081
