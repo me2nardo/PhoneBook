@@ -1,13 +1,11 @@
 package org.rbo.config;
 
 
-import org.flywaydb.core.Flyway;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.h2.tools.Server;
 import org.rbo.util.Constants;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityScan;
@@ -15,8 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -31,9 +29,9 @@ import java.sql.SQLException;
  * @author vitalii.levash
  */
 @Configuration
-@EnableAutoConfiguration
 @EntityScan(basePackages = {"org.rbo.model"})
 @EnableJpaRepositories(basePackages = {"org.rbo.dao"})
+@EnableElasticsearchRepositories({"org.rbo.dao.search"})
 @EnableTransactionManagement
 public class RepositoryConfig {
 

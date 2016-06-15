@@ -2,6 +2,9 @@ package org.rbo.model;
 
 import org.rbo.util.validate.Phone;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +14,7 @@ import javax.validation.constraints.Size;
  * @author vitalii.levash
  */
 @Entity
+@Document(indexName = "phone",type = "item",shards = 1, replicas = 0)
 public class PhoneBook {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,6 +43,8 @@ public class PhoneBook {
     @Column(length = 30)
     @Email
     private String email;
+
+    @Field(type = FieldType.Nested)
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "userid")
     private User user;

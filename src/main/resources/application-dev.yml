@@ -17,7 +17,7 @@ spring:
                         useServerPrepStmts: true
     jpa:
         database-platform: org.hibernate.dialect.H2Dialect
-        database: MYSQL
+        database: H2
         persistenceUnitName: DEV-RBO
         properties:
             hibernate.generate_statistics: "true"
@@ -28,15 +28,18 @@ spring:
 
     data:
         elasticsearch:
-            cluster-name:
+            cluster-name: elasticsearch
             cluster-nodes:
             properties:
                 path:
                   logs: target/elasticsearch/log
                   data: target/elasticsearch/data
-    thymeleaf.cache: false
 
-    loggining.level: DEBUG
+    thymeleaf:
+         cache: "false"
+
+loggining:
+    level.: "DEBUG"
 
 server:
     port: 8081

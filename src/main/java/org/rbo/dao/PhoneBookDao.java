@@ -16,4 +16,5 @@ public interface PhoneBookDao extends JpaRepository<PhoneBook,Integer>,PhoneBook
 
     @Query("SELECT u.phoneBookList FROM User u WHERE u.id=:uid")
     List<PhoneBook> findByUser(@Param("uid") final int user_id);
+
 }
