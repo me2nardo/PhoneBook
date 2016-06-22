@@ -26,16 +26,7 @@ spring:
             hibernate.format_sql: "true"
             hibernate.show_sql: "true"
             hibernate.enable_lazy_load_no_trans: "true"
-
-    data:
-        elasticsearch:
-            cluster-name: elasticsearch
-            cluster-nodes:
-            properties:
-                path:
-                  logs: target/elasticsearch/log
-                  data: target/elasticsearch/data
-
+            hibernate.hbm2ddl.auto: "create"
     thymeleaf:
          cache: "false"
 

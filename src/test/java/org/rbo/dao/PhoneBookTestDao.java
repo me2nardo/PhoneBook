@@ -1,16 +1,14 @@
 package org.rbo.dao;
 
-import org.rbo.Application;
 import org.rbo.model.PhoneBook;
 import org.rbo.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.rbo.util.RboStrings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,12 +16,10 @@ import java.util.List;
 /**
  * @author vitalii.levash
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
-@WebAppConfiguration
-@Transactional
-@Rollback
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class PhoneBookTestDao {
+
     @Autowired
     private PhoneBookDao phoneBookDao;
     @Autowired
@@ -32,10 +28,10 @@ public class PhoneBookTestDao {
     @Test
     @Transactional
     public void addPhoneItem() throws Exception{
-        User user = userDao.findByLogin("leonard");
-        System.out.println(user.getId());
+        User user = userDao.findByLogin(RboStrings.TESTUSER);
+
         PhoneBook phoneBook = new PhoneBook();
-        phoneBook.setEmail("john@gmail.com");
+        phoneBook.setEmail(RboStrings.TESTEMAIL);
         phoneBook.setAddress("Kiev");
         phoneBook.setLastname("Smith");
         phoneBook.setName("John");
@@ -46,7 +42,7 @@ public class PhoneBookTestDao {
         phoneBook.setUser(user);
 
         phoneBookDao.save(phoneBook);
-        PhoneBook uphoneBook = phoneBookDao.findByMail("john@gmail.com");
+        PhoneBook uphoneBook = phoneBookDao.findByMail(RboStrings.TESTEMAIL);
 
         Assert.assertEquals(phoneBook.getId(),uphoneBook.getId());
     }

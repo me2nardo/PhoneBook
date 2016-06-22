@@ -1,4 +1,4 @@
-package org.rbo.config;
+package org.rbo.util.context;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

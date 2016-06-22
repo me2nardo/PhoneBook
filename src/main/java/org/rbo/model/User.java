@@ -1,11 +1,15 @@
 package org.rbo.model;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.rbo.util.validate.Login;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+
+import static com.fasterxml.jackson.core.JsonParser.Feature.*;
 
 /**
  * @author vitalii.levash
@@ -27,8 +31,7 @@ public class User {
     @NotNull
     private String fio;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY)
-    @JoinColumn(name = "userid")
+    @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "user")
     private List<PhoneBook> phoneBookList;
 
 

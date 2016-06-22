@@ -1,39 +1,34 @@
 package org.rbo.dao;
 
-import org.rbo.Application;
 import org.rbo.model.PhoneBook;
 import org.rbo.model.User;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
 
 /**
- * Created by vitalii.levash on 18.04.2016.
+ * @author vitalii.levash
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
-@WebAppConfiguration
-
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class UserTestDao {
+
+    private final String USER2TEST="leonard";
 
    @Autowired
     private UserDao userDao;
 
     @Test
     public void testGetLogin() throws Exception{
-        User user = userDao.findByLogin("leonard");
+        User user = userDao.findByLogin(USER2TEST);
         List<PhoneBook> list =user.getPhoneBookList();
-        System.out.println(user.getLogin());
-        Assert.assertEquals(user.getLogin(),"leonard");
+        Assert.assertEquals(user.getLogin(),USER2TEST);
         Assert.assertTrue(list.size()>0);
-
     }
 }

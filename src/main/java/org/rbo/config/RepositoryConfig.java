@@ -8,16 +8,13 @@ import org.h2.tools.Server;
 import org.rbo.util.Constants;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.orm.jpa.EntityScan;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
@@ -29,22 +26,14 @@ import java.sql.SQLException;
  * @author vitalii.levash
  */
 @Configuration
-@EntityScan(basePackages = {"org.rbo.model"})
 @EnableJpaRepositories(basePackages = {"org.rbo.dao"})
-@EnableElasticsearchRepositories({"org.rbo.dao.search"})
 @EnableTransactionManagement
 public class RepositoryConfig {
 
 
-    /**
-     * Creates and configures the HikariCP datasource bean.
-     *
-     * @param env The runtime environment of  our application.
-     * @return
-     */
+
     @Bean(destroyMethod = "close")
     @ConfigurationProperties(prefix = "spring.datasource.hikari")
-    //@ConditionalOnExpression("#{!environment.acceptsProfiles('" + Constants.SPRING_PROFILE_DEVELOPMENT + "') ")
     public DataSource dataSource(DataSourceProperties dataSourceProperties) {
 
         HikariConfig dataSourceConfig = new HikariConfig();
@@ -59,63 +48,30 @@ public class RepositoryConfig {
 
     }
 
-    /**
-     * Creates the bean that creates the JPA entity manager factory.
-     *
-     * @param dataSource The datasource that provides the database connections.
-     * @param env        The runtime environment of  our application.
-     * @return
-     */
+
 
     @Bean
     @ConfigurationProperties(prefix = "spring.jpa")
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, Environment env, RepositoryContext repositoryContext) {
-        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactoryBean.setDataSource(dataSource);
-        entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        entityManagerFactoryBean.setPackagesToScan("org.rbo.model");
-        entityManagerFactoryBean.setPersistenceUnitName(repositoryContext.getPersistenceUnitName());
-
-        entityManagerFactoryBean.setJpaProperties(repositoryContext.getProperties());
-
-        return entityManagerFactoryBean;
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, EntityManagerFactoryBuilder builder) {
+        return builder.dataSource(dataSource)
+                .packages("org.rbo.model")
+                .persistenceUnit("RBO")
+                .build();
     }
 
-    /**
-     * Creates the transaction manager bean that integrates the used JPA provider with the
-     * Spring transaction mechanism.
-     *
-     * @param entityManagerFactory The used JPA entity manager factory.
-     * @return
-     */
+
     @Bean
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
-    /**
-     * Open the TCP port for the H2 database, so it is available remotely.
-     *
-     * @return the H2 database TCP server
-     * @throws SQLException if the server failed to start
-     */
+
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
     public Server h2TCPServer() throws SQLException {
         return Server.createTcpServer("-tcp","-tcpAllowOthers");
     }
-/*
-    @Bean
-    public Flyway flyway(){
-        Flyway flyway = new Flyway();
-        flyway.setBaselineOnMigrate(true);
-
-        flyway.setDataSource("jdbc:h2:mem:testdb","sa","sa");
-        flyway.migrate();
-        return flyway;
-    }
-    */
 
 }

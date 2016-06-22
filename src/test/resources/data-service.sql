@@ -1,0 +1,1 @@
+INSERT INTO phonebook VALUES (1,'London','ajohn@gmail.com','Adams','+38(097)0472067','John','+38(095)0472067','Adams','dev',1),(9,'London','tony@gmail.com','TBler','+38(095)0472067','Toni','','Bler','',1),(10,'Mexico','miron@gmail.com','Kiese','+38(095)0572067','Miron','','Nikel','',1);
