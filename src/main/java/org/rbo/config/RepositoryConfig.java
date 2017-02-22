@@ -48,8 +48,6 @@ public class RepositoryConfig {
 
     }
 
-
-
     @Bean
     @ConfigurationProperties(prefix = "spring.jpa")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, EntityManagerFactoryBuilder builder) {

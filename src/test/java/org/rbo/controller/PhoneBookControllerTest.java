@@ -1,48 +1,39 @@
 package org.rbo.controller;
-
-import org.rbo.Application;
 import org.rbo.model.PhoneBook;
 import org.rbo.service.PhoneBookService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.annotation.Resource;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 /**
  * @author vitalii.levash
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class})
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@WebMvcTest
 public class PhoneBookControllerTest {
-    @Autowired
-    private WebApplicationContext wac;
 
     private MockMvc mockMvc;
-    @Resource
-    private FilterChainProxy springSecurityFilterChain;
 
     @Autowired
     private PhoneBookService phoneBookService;
 
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).dispatchOptions(true).addFilter(springSecurityFilterChain).build();
-    }
-/*
+
+
     @Test
     public void testPhoneAddForm() throws Exception {
-        mockMvc.perform(get("/add").with(SecurityRequestPostProcessors.userDeatilsService("leonard")))
+        mockMvc.perform(get("/add"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("phoneform"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("phoneBook"));
@@ -51,7 +42,7 @@ public class PhoneBookControllerTest {
 
     @Test
     public void testMainPage() throws Exception {
-        mockMvc.perform(get("/").with(SecurityRequestPostProcessors.userDeatilsService("leonard")))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("phonelist"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("filterCriteria"));
@@ -59,7 +50,7 @@ public class PhoneBookControllerTest {
     }
     @Test
     public void phoneAddFailed() throws Exception{
-        mockMvc.perform(post("/add").with(SecurityRequestPostProcessors.userDeatilsService("leonard"))
+        mockMvc.perform(post("/add")
                 .param("surname", "Stevenson")
                 .param("name", "Mike")
                 .param("lastname", "Steev")
@@ -72,7 +63,7 @@ public class PhoneBookControllerTest {
     }
     @Test
     public void phoneAddOk() throws Exception{
-        mockMvc.perform(post("/add").with(SecurityRequestPostProcessors.userDeatilsService("leonard"))
+        mockMvc.perform(post("/add")
                 .param("surname","Stevenson")
                 .param("name","Mike")
                 .param("lastname","Steev")
@@ -87,7 +78,7 @@ public class PhoneBookControllerTest {
     @Test
     public void editPhoneItemForm() throws Exception {
         PhoneBook phoneBook = phoneBookService.getByEmail("mike@gmail.com");
-        mockMvc.perform(post("/add").with(SecurityRequestPostProcessors.userDeatilsService("leonard"))
+        mockMvc.perform(post("/add")
                 .param("id", phoneBook.getId().toString())
                 .param("surname", "Tayson")
                 .param("name", "Mike")
@@ -105,11 +96,11 @@ public class PhoneBookControllerTest {
 
     @Test
     public void testSearch() throws Exception{
-        mockMvc.perform(post("/search").with(SecurityRequestPostProcessors.userDeatilsService("leonard"))
+        mockMvc.perform(post("/search")
                 .param("name", "mi")
                 .param("mobPhone", "38"))
                 .andExpect(MockMvcResultMatchers.view().name("phonelist"));
     }
-*/
+
 
 }

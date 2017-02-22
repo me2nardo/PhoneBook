@@ -1,59 +1,52 @@
 package org.rbo.model;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.rbo.util.validate.Login;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.List;
-
-import static com.fasterxml.jackson.core.JsonParser.Feature.*;
 
 /**
  * @author vitalii.levash
  */
 @Entity
-public class User {
+@Table(name = "user")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Column(unique = true, nullable = false, length = 30)
-    @NotNull
-    @Size(min = 5)
-    @Login(message = "Login must me Latin")
-    private String login;
-    @Column(nullable = false, length = 100)
-    @NotNull
+    private Long id;
+    @Column(name = "user_name",nullable = false,unique = true,updatable = false)
+    private String username;
+    @Column(name = "password",nullable = false, length = 100)
     private String password;
-    @Column(nullable = false, length = 100)
-    @NotNull
-    private String fio;
+    @Column(name = "first_name",nullable = false,length = 40)
+    private String firstName;
+    @Column(name = "last_name",nullable = false,length = 40)
+    private String lastName;
+
+    @Column(name = "account_non_expired",length = 1)
+    private boolean accountNonExpired;
+    @Column(name = "account_non_locked",length = 1)
+    private boolean accountNonLocked;
+    @Column(name = "credentials_non_expired",length = 1)
+    private boolean credentialsNonExpired;
+    @Column(name = "enable",length = 1)
+    private boolean enabled;
 
     @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "user")
     private List<PhoneBook> phoneBookList;
 
 
-    public User() {
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
@@ -62,12 +55,71 @@ public class User {
         this.password = password;
     }
 
-    public String getFio() {
-        return fio;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFio(String fio) {
-        this.fio = fio;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    //Todo:: Implement authorities
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     public List<PhoneBook> getPhoneBookList() {
@@ -77,6 +129,4 @@ public class User {
     public void setPhoneBookList(List<PhoneBook> phoneBookList) {
         this.phoneBookList = phoneBookList;
     }
-
-
 }

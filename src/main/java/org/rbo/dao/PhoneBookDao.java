@@ -10,11 +10,10 @@ import java.util.List;
 /**
  *@author vitalii.levash
  */
-public interface PhoneBookDao extends JpaRepository<PhoneBook,Integer>,PhoneBookFilterDao {
-    @Query("SELECT b FROM PhoneBook b WHERE b.email=:uemail")
-    PhoneBook findByMail(@Param("uemail") String email);
+public interface PhoneBookDao extends JpaRepository<PhoneBook,Integer> {
 
-    @Query("SELECT u.phoneBookList FROM User u WHERE u.id=:uid")
+    PhoneBook findByEmail(@Param("uemail") String email);
+
     List<PhoneBook> findByUser(@Param("uid") final int user_id);
 
 }

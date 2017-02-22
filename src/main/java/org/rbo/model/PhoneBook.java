@@ -13,6 +13,7 @@ import java.io.Serializable;
  * @author vitalii.levash
  */
 @Entity
+@Table(name = "phone_book")
 public class PhoneBook  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

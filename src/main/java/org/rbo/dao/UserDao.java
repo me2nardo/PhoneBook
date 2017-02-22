@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
  * @author vitalii.levash
  */
 public interface UserDao extends JpaRepository<User,Integer> {
-    @Query("SELECT u FROM User u WHERE u.login=:ulogin")
-    User findByLogin(@Param("ulogin") String login);
+
+    User findByUserName(String username);
 }
