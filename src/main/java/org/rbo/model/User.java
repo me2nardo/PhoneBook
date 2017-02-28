@@ -1,5 +1,6 @@
 package org.rbo.model;
 
+import org.hibernate.annotations.BatchSize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +10,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
+ * User Entity with authorities
  * @author vitalii.levash
  */
 @Entity
@@ -21,7 +24,7 @@ public class User extends UserDetailInformation implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "user_name",nullable = false,unique = true,updatable = false)
+    @Column(name = "user_name",nullable = false,unique = true,updatable = false,length = 40)
     private String username;
     @Column(name = "password",nullable = false, length = 100)
     private String password;
@@ -37,6 +40,14 @@ public class User extends UserDetailInformation implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "user")
     private List<PhoneBook> phoneBookList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_authority",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+    @BatchSize(size = 20)
+    private Set<Authority> authority = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -100,12 +111,21 @@ public class User extends UserDetailInformation implements UserDetails {
         this.enabled = enabled;
     }
 
-    //Todo:: Implement authorities
+    public Set<Authority> getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Set<Authority> authority) {
+        this.authority = authority;
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return authorities;
+        List<GrantedAuthority> list = authority.stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+                .collect(Collectors.toList());
+        return list;
     }
 
     public List<PhoneBook> getPhoneBookList() {
@@ -115,6 +135,8 @@ public class User extends UserDetailInformation implements UserDetails {
     public void setPhoneBookList(List<PhoneBook> phoneBookList) {
         this.phoneBookList = phoneBookList;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

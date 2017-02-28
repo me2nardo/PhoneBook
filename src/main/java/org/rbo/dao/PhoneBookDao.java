@@ -8,7 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 /**
- *@author vitalii.levash
+ * Spring Data JPA repository for the PhoneBook entity.
+ * @author vitalii.levash
  */
 public interface PhoneBookDao extends JpaRepository<PhoneBook,Integer> {
 

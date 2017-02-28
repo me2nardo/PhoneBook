@@ -29,7 +29,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         LOG.debug("Authenticating {}", username);
-        Optional<User> user = userDao.findByUsername(username);
+        Optional<User> user = userDao.findOneWithAuthoritiesByUsername(username);
 
         return user.map(u-> new org.springframework.security.core.userdetails.User(u.getUsername(),
                 u.getPassword(),u.isEnabled(),
