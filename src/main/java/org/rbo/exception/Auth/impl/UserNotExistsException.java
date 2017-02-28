@@ -11,4 +11,9 @@ public class UserNotExistsException extends AuthException {
     public UserNotExistsException(final int login){
         super("ID for user not exists"+login);
     }
+
+    public UserNotExistsException(final String username){
+        super("ID for user not exists"+username);
+    }
+
 }

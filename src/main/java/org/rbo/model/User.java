@@ -1,29 +1,30 @@
 package org.rbo.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author vitalii.levash
  */
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+public class User extends UserDetailInformation implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Column(name = "user_name",nullable = false,unique = true,updatable = false)
     private String username;
     @Column(name = "password",nullable = false, length = 100)
     private String password;
-    @Column(name = "first_name",nullable = false,length = 40)
-    private String firstName;
-    @Column(name = "last_name",nullable = false,length = 40)
-    private String lastName;
 
     @Column(name = "account_non_expired",length = 1)
     private boolean accountNonExpired;
@@ -37,30 +38,12 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "user")
     private List<PhoneBook> phoneBookList;
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     @Override
@@ -72,12 +55,13 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    public String getLastName() {
-        return lastName;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -119,7 +103,9 @@ public class User implements UserDetails {
     //Todo:: Implement authorities
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
     }
 
     public List<PhoneBook> getPhoneBookList() {
@@ -128,5 +114,20 @@ public class User implements UserDetails {
 
     public void setPhoneBookList(List<PhoneBook> phoneBookList) {
         this.phoneBookList = phoneBookList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

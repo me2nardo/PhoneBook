@@ -2,13 +2,14 @@ package org.rbo.dao;
 
 import org.rbo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
+
+import java.util.Optional;
 
 /**
  * @author vitalii.levash
  */
-public interface UserDao extends JpaRepository<User,Integer> {
+public interface UserDao extends JpaRepository<User,Long> {
 
-    User findByUserName(String username);
+    Optional<User> findByUsername(String username);
 }

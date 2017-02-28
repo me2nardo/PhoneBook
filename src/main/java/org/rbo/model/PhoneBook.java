@@ -1,12 +1,7 @@
 package org.rbo.model;
 
-import org.rbo.util.validate.Phone;
-import org.hibernate.validator.constraints.Email;
-
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
@@ -14,33 +9,19 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "phone_book")
-public class PhoneBook  implements Serializable {
+public class PhoneBook extends UserDetailInformation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Column(length = 60)
+    private Long id;
+    @Column(name = "info",length = 60)
     private String userInfo;
-    @Column(nullable = false, length = 30)
-    @NotNull
-    @Size(min = 3)
-    private String surname;
-    @Column(nullable = false, length = 30)
-    @NotNull
-    @Size(min = 3)
-    private String name;
-    @Column(nullable = false, length = 30)
-    private String lastname;
-    @Column(length = 100)
+    @Column(name = "address",nullable = false, length = 30)
     private String address;
-    @Column(nullable = false, length = 15)
-    @NotNull
-    @Phone(message = "Allowed format +38(066)1234567 only UA")
-    private String mobPhone;
-    @Column(length = 15)
-    @Phone(message = "Allowed format +38(066)1234567 only UA")
+    @Column(name = "mobile_phone",nullable = false, length = 15)
+    private String mobilePhone;
+    @Column(name = "phone",length = 15)
     private String phone;
-    @Column(length = 30)
-    @Email
+    @Column(name = "email",length = 30)
     private String email;
 
     @ManyToOne(fetch=FetchType.LAZY)
@@ -50,11 +31,11 @@ public class PhoneBook  implements Serializable {
 
     public PhoneBook() { }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,28 +47,12 @@ public class PhoneBook  implements Serializable {
         this.userInfo = userInfo;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getMobilePhone() {
+        return mobilePhone;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
     }
 
     public String getAddress() {
@@ -97,14 +62,7 @@ public class PhoneBook  implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-
-    public String getMobPhone() {
-        return mobPhone;
-    }
-
-    public void setMobPhone(String mobPhone) {
-        this.mobPhone = mobPhone;
-    }
+    
 
     public String getPhone() {
         return phone;
@@ -128,5 +86,20 @@ public class PhoneBook  implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PhoneBook phoneBook = (PhoneBook) o;
+
+        return id.equals(phoneBook.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
