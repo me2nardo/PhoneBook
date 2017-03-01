@@ -1,16 +1,19 @@
 package org.rbo.controller;
 
 import org.rbo.model.User;
-import org.rbo.security.SecurityUtils;
 import org.rbo.service.UserService;
 import org.rbo.service.dto.UserDto;
 import org.rbo.service.mapper.UserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Rest controller for managing current user account
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api")
 public class AccountController {
+
+    private final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     private UserService userService;
@@ -54,4 +59,18 @@ public class AccountController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    /**
+     * GET  /authenticate : check if the user is authenticated
+     *
+     * @param request the HTTP request
+     * @return the login if the user is authenticated
+     */
+    @GetMapping("/authenticate")
+    public String isAuthenticated(HttpServletRequest request) {
+        LOG.debug("REST request to check if the current user is authenticated");
+        return request.getRemoteUser();
+    }
+
+    //TODO:: add logout
 }

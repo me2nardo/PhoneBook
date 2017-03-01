@@ -11,16 +11,38 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.filter.CorsFilter;
+
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 /**
  * @author vitalii.levash
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
+
+    private final String KEY = "Some - demo - key";
+
     private UserDetailsService userDetailsService;
+    private AuthenticationManagerBuilder authenticationManagerBuilder;
+    private RememberMeServices rememberMeServices;
+    private CorsFilter corsFilter;
+
+
+    public SecurityConfig(UserDetailsService userDetailsService,AuthenticationManagerBuilder authenticationManagerBuilder,
+                          RememberMeServices rememberMeServices,CorsFilter corsFilter){
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.userDetailsService = userDetailsService;
+        this.rememberMeServices = rememberMeServices;
+        this.corsFilter = corsFilter;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -35,37 +57,60 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-
-        httpSecurity
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/resources/**" ).permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/user/register**").permitAll()
-                .antMatchers("/404").permitAll()
-                .and();
-
-        httpSecurity.authorizeRequests().antMatchers("/**").authenticated();
-
-        httpSecurity.formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/j_spring_security_check")
-                .failureUrl("/login?error")
-                .usernameParameter("j_login")
-                .passwordParameter("j_password")
-                .defaultSuccessUrl("/")
-
-                .permitAll();
-
-        httpSecurity.logout()
-                .permitAll()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .invalidateHttpSession(true);
+    @Bean
+    public AuthenticationEntryPoint http401EntryPoint() {
+        return (request, response, authException) -> response.sendError(SC_UNAUTHORIZED, "Access Denied");
     }
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(http401EntryPoint())
+                .and()
+                .rememberMe()
+                .rememberMeServices(rememberMeServices)
+
+                .rememberMeParameter("remember-me")
+                .key(KEY)
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/api/authentication")
+
+
+                .usernameParameter("j_username")
+                .passwordParameter("j_password")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/api/logout")
+
+
+                .permitAll()
+                .and()
+                .headers()
+                .frameOptions()
+                .disable()
+                .and()
+                .authorizeRequests()
+
+                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/authenticate").permitAll()
+                .antMatchers("/api/**").authenticated()
+
+                ;
+
+
+    }
+
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
+    }
     @Bean
     public BCryptPasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
