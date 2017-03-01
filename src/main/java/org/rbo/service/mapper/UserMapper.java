@@ -21,6 +21,11 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    /**
+     * Convert to USER and ignore custom fields
+     * @param userDto transformation model of user entity
+     * @return mapped user entity
+     */
     @Mappings({
             @Mapping(target = "accountNonExpired", ignore = true),
             @Mapping(target = "accountNonLocked", ignore = true),
@@ -31,11 +36,31 @@ public interface UserMapper {
             })
     User toUser(UserDto userDto);
 
+    /**
+     * Convert USER entity to transformation object. Hide meta columns.
+     * @param user entity to convert
+     * @return converted dto
+     */
+    @Mappings({
+            @Mapping(target = "authorities",ignore = true)
+    })
+    UserDto toUserDto(User user);
+
+    /**
+     * Default convert authorities set to transformation object set of Strings.
+     * @param authorities set
+     * @return converted strings authorities
+     */
     default Set<String> stringsFromAuthorities (Set<Authority> authorities) {
         return authorities.stream().map(Authority::getName)
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Default convert authorities from transformation object
+     * @param strings authorities set
+     * @return converted authorities
+     */
     default Set<Authority> authoritiesFromStrings(Set<String> strings) {
         return strings.stream().map(string -> {
             Authority auth = new Authority();

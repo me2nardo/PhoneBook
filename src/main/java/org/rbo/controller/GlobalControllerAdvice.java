@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author vitalii.levash
  */
-@ControllerAdvice(basePackages = {"com.lardi.controller"})
+@ControllerAdvice
 public class GlobalControllerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
