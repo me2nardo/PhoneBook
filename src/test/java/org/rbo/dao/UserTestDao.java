@@ -1,6 +1,7 @@
 package org.rbo.dao;
 
 import org.junit.Assert;
+import org.rbo.Application;
 import org.rbo.model.Authority;
 import org.rbo.model.User;
 
@@ -8,11 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 import java.util.Set;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.is;
 
 
@@ -21,6 +24,7 @@ import static org.hamcrest.Matchers.is;
  * @author vitalii.levash
  */
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
 @DataJpaTest
 public class UserTestDao {
 
@@ -60,6 +64,27 @@ public class UserTestDao {
 
        String name = result.stream().map(u->u.getName()).findFirst().get();
        Assert.assertThat(name,is("ROLE_DEMO"));
+    }
+
+    /**
+     * Test find user by his username and email. Using for registration.
+     */
+    @Test
+    public void findOneByUsernameAndEmailTest() throws Exception{
+        User user = userDao.findOneByUsernameOrEmail("sJohn","demo@demo.com").get();
+
+        Assert.assertThat(user.getUsername(),is("sJohn"));
+        Assert.assertThat(user.getEmail(),is("demo@demo.com"));
+    }
+
+    /**
+     * Test find user by his username and email. Using for registration. Email validation failed.
+     */
+    @Test
+    public void findOneByUsernameAndEmailOneTest() throws Exception{
+        User user = userDao.findOneByUsernameOrEmail("sJohn","demo@d.com").get();
+
+        Assert.assertThat(user.getUsername(),not("demo@demo.com"));
     }
 
 }

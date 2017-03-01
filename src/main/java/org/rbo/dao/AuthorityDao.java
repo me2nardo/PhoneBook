@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Spring Data JPA repository for the Authority entity.
  * @author vitalii.levash
  */
-public interface AuthorityDao extends JpaRepository<Authority,Long> {
+public interface AuthorityDao extends JpaRepository<Authority,String> {
 }

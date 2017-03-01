@@ -29,8 +29,6 @@ public class PhoneBook extends UserDetailInformation implements Serializable {
     private User user;
 
 
-    public PhoneBook() { }
-
     public Long getId() {
         return id;
     }

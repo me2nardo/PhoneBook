@@ -27,4 +27,12 @@ public interface UserDao extends JpaRepository<User,Long> {
      */
     @EntityGraph(attributePaths = "authority")
     Optional<User> findOneWithAuthoritiesByUsername(String username);
+
+    /**
+     * Find user by his username and email. Using for registration.
+     * @param username requested username from user entity
+     * @param email requested email from user entity
+     * @return Optional User. Check for already registered.
+     */
+    Optional<User> findOneByUsernameOrEmail(String username,String email);
 }

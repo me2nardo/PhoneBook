@@ -12,18 +12,8 @@ import java.io.Serializable;
 public class Authority implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     @Column(name = "name",nullable = false,unique = true,length = 10)
     private String name;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

@@ -1,2 +1,2 @@
 language: java
-script: mvn install -Dspring.profiles.active=dev
+script: mvn install
