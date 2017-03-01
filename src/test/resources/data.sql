@@ -1,5 +1,6 @@
 INSERT INTO authority (name) VALUES('ROLE_DEMO');
 INSERT INTO authority (name) VALUES('ROLE_USER');
+INSERT INTO authority (name) VALUES('ROLE_ADMIN');
 
 INSERT INTO user (id,email,first_name,last_name,name,password,user_name,account_non_expired,account_non_locked,credentials_non_expired,enable)
 VALUES (100,'demo@demo.com','Smith','Adam','John','11','sJohn',0,0,0,1);

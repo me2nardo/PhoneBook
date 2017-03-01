@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Register a new user with default authority ROLE_USER
      * @param user requested user
+     * @return created user
      */
     @Override
     public User registerUser(User user) {
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAuthority(authorities);
 
-        userDao.save(user);
+        userDao.saveAndFlush(user);
         LOG.debug("Created user {}",user);
 
         return user;
@@ -67,14 +68,19 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Update all information for specific user
-     * @param user requested user
+     * @param
      */
     @Override
-    public void updateUser(User user) {
-        Optional.of(userDao.findOne(user.getId())).ifPresent(u->{
-            userDao.findOneByUsernameOrEmail(u.getUsername(),u.getEmail())
-                    .map(um-> new UserExistsException(um.getName(),um.getEmail()));
-        });
+    public void updateUser(String userName,String lastName,String firstName,String name) {
+        userDao.findOneByUsername(userName)
+                .map(u->{
+                   u.setLastName(lastName);
+                   u.setFirstName(firstName);
+                   u.setName(name);
+                   userDao.saveAndFlush(u);
+                   LOG.info("Update user {}",u);
+                   return u;
+                }).orElseThrow(()-> new UserNotExistsException(userName));
 
     }
 
