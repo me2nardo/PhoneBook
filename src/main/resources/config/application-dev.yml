@@ -25,14 +25,6 @@ spring:
             hibernate.use_sql_comments: "true"
             hibernate.format_sql: "true"
             hibernate.show_sql: "true"
-    data:
-        elasticsearch:
-            cluster-name: elasticsearch
-            cluster-nodes:
-            properties:
-                path:
-                  logs: target/elasticsearch/log
-                  data: target/elasticsearch/data
 
     thymeleaf:
          cache: "false"

@@ -13,10 +13,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.filter.CorsFilter;
+
+
+import javax.servlet.http.HttpServletResponse;
 
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
@@ -31,14 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final String KEY = "Some - demo - key";
 
     private UserDetailsService userDetailsService;
-    private AuthenticationManagerBuilder authenticationManagerBuilder;
+
     private RememberMeServices rememberMeServices;
     private CorsFilter corsFilter;
 
 
-    public SecurityConfig(UserDetailsService userDetailsService,AuthenticationManagerBuilder authenticationManagerBuilder,
+    public SecurityConfig(UserDetailsService userDetailsService,
                           RememberMeServices rememberMeServices,CorsFilter corsFilter){
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDetailsService = userDetailsService;
         this.rememberMeServices = rememberMeServices;
         this.corsFilter = corsFilter;
@@ -60,6 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationEntryPoint http401EntryPoint() {
         return (request, response, authException) -> response.sendError(SC_UNAUTHORIZED, "Access Denied");
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request,response,exception)-> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+
     }
 
     @Override

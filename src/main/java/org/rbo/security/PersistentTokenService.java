@@ -37,6 +37,7 @@ public class PersistentTokenService extends AbstractRememberMeServices {
 
     private static final int TOKEN_VALIDITY_DAYS = 7;
     private final int TOKEN_SIZE = 20;
+    private static final String KEY = "Some - demo - key";
 
     private static final int TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * TOKEN_VALIDITY_DAYS;
 
@@ -44,9 +45,9 @@ public class PersistentTokenService extends AbstractRememberMeServices {
     private PersistentTokenDao persistentTokenDao;
 
     @Autowired
-    public PersistentTokenService(String key, UserDetailsService userDetailsService,
+    public PersistentTokenService(UserDetailsService userDetailsService,
                                   UserDao userDao,PersistentTokenDao persistentTokenDao) {
-        super(key, userDetailsService);
+        super(KEY, userDetailsService);
         this.userDao = userDao;
         this.persistentTokenDao = persistentTokenDao;
     }
