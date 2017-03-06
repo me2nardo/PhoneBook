@@ -32,10 +32,7 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -87,6 +84,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang.version}</version>
@@ -109,6 +112,7 @@
         <hikaricp.version>2.4.6</hikaricp.version>
         <org.mapstruct.version>1.1.0.Final</org.mapstruct.version>
         <commons-lang.version>3.5</commons-lang.version>
+        <jjwt.version>0.7.0</jjwt.version>
     </properties>
 
     <build>

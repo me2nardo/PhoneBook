@@ -1,12 +1,11 @@
 package org.rbo.dao;
 
 import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.rbo.Application;
 import org.rbo.model.Authority;
 import org.rbo.model.User;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,10 +59,10 @@ public class UserTestDao {
        User user = userDao.findOneWithAuthoritiesByUsername("sJohn").get();
        Set<Authority> result = user.getAuthority();
 
-       Assert.assertThat(result.size(),is(1));
+       Assert.assertThat(result.size(),is(3));
 
        String name = result.stream().map(u->u.getName()).findFirst().get();
-       Assert.assertThat(name,is("ROLE_DEMO"));
+       Assert.assertThat(name,is("ROLE_USER"));
     }
 
     /**

@@ -3,7 +3,7 @@ spring:
         restart:
             enabled: true
         livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
+            enabled: false
     datasource:
         url: jdbc:mysql://localhost:3306/td
         name: prod
@@ -24,16 +24,7 @@ spring:
             hibernate.cache.use_query_cache: true
             hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                  logs: target/elasticsearch/log
-                  data: target/elasticsearch/data
-    thymeleaf:
-        cache: false
+
 
 server:
     port: 8080

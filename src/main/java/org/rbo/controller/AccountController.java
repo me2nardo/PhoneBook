@@ -1,6 +1,10 @@
 package org.rbo.controller;
 
+import org.rbo.controller.vm.LoginVM;
 import org.rbo.model.User;
+import org.rbo.security.jwt.JWTConfiguration;
+import org.rbo.security.jwt.TokenProvider;
+import org.rbo.security.jwt.model.UserToken;
 import org.rbo.service.UserService;
 import org.rbo.service.dto.UserDto;
 import org.rbo.service.mapper.UserMapper;
@@ -10,10 +14,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Collections;
 
 /**
  * Rest controller for managing current user account
@@ -27,6 +39,10 @@ public class AccountController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenProvider tokenProvider;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /**
      * POST  /register : register the user.
@@ -70,6 +86,32 @@ public class AccountController {
     public String isAuthenticated(HttpServletRequest request) {
         LOG.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
+    }
+
+    /**
+     * POST  /authenticate : authenticate user with credentials
+     *
+     * @param loginVM user credentials with rememberMe
+     * @return token id
+     */
+    @PostMapping("/authenticate")
+    public ResponseEntity authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
+
+        try {
+            Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
+            String jwt = tokenProvider.createToken(authentication, rememberMe);
+            response.addHeader(JWTConfiguration.AUTHORIZATION_HEADER, "Bearer " + jwt);
+            return ResponseEntity.ok(new UserToken(jwt));
+        } catch (AuthenticationException ae) {
+            LOG.trace("Authentication exception trace: {}", ae);
+            return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",
+                    ae.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
+        }
     }
 
     //TODO:: add logout
