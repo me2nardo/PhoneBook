@@ -1,2 +1,6 @@
+os:
+  - linux
 language: java
 script: mvn install
+jdk:
+  - oraclejdk8
