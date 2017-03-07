@@ -1,22 +1,21 @@
 package org.rbo.controller;
 
 import org.rbo.exception.Auth.impl.LoginExistsException;
+import org.rbo.exception.Auth.impl.UserNotExistsException;
 import org.rbo.exception.web.NotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author vitalii.levash
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalControllerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
@@ -39,19 +38,12 @@ public class GlobalControllerAdvice {
         return "error";
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String deniedHandler(AccessDeniedException e){
-        return "403";
-    }
-    @ExceptionHandler(BadCredentialsException.class)
-    public String badCredentialHandler(BadCredentialsException e){
-        return "login";
-    }
-    @ExceptionHandler({UsernameNotFoundException.class, org.springframework.security.core.AuthenticationException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String unauthorizedHandler(org.springframework.security.core.AuthenticationException e){
-        return "login";
+    @ExceptionHandler(UserNotExistsException.class)
+    public ResponseEntity handleUserNotExists(UserNotExistsException e){
+        return  ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
+
     }
 
 }

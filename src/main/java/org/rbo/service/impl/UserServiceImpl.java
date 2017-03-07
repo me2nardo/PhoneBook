@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static java.util.stream.IntStream.of;
-
 /**
  * @author vitalii.levash
  */
@@ -84,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public void updateUser(User user) {
-        //TODO :: Allow to change user authorities list and other params
+
         userDao.findOneByUsername(user.getUsername())
                 .map(u->{
                    u.setLastName(user.getLastName());
