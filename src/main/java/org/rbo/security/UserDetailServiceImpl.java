@@ -1,7 +1,7 @@
 package org.rbo.security;
 
 import org.rbo.dao.UserDao;
-import org.rbo.exception.Auth.impl.UserNotExistsException;
+import org.rbo.exception.Auth.UserNotExistsException;
 import org.rbo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

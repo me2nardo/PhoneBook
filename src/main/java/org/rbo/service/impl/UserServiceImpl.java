@@ -3,7 +3,7 @@ package org.rbo.service.impl;
 import org.rbo.dao.AuthorityDao;
 import org.rbo.dao.UserDao;
 import org.rbo.exception.Auth.UserExistsException;
-import org.rbo.exception.Auth.impl.UserNotExistsException;
+import org.rbo.exception.Auth.UserNotExistsException;
 import org.rbo.model.Authority;
 import org.rbo.model.User;
 import org.rbo.service.UserService;

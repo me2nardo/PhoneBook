@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.rbo.Application;
 import org.rbo.dao.UserDao;
-import org.rbo.exception.Auth.impl.UserNotExistsException;
-import org.rbo.model.Authority;
 import org.rbo.model.User;
 import org.rbo.service.dto.UserDto;
 import org.rbo.service.mapper.UserMapper;
@@ -15,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
