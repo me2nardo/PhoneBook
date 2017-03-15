@@ -1,7 +1,6 @@
 package org.rbo.config;
 
 
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.h2.tools.Server;
@@ -16,7 +15,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;

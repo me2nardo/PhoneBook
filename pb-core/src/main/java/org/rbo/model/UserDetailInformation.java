@@ -1,6 +1,7 @@
 package org.rbo.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
 /**
