@@ -47,9 +47,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User registerUser(User user) {
+        //TODO:: Fix UserExistsException
+        boolean isPreset=userDao.findOneByUsernameOrEmail(user.getUsername(),user.getEmail()).isPresent();
 
-        userDao.findOneByUsernameOrEmail(user.getUsername(),user.getEmail())
-                .map(u-> new UserExistsException(u.getUsername(),u.getEmail()));
+        if (isPreset){
+            throw new UserExistsException(user.getName(),user.getEmail());
+        }
 
         if (user.getAuthority().isEmpty()) {
             Authority authority = authorityDao.findOne("ROLE_USER");
@@ -66,7 +69,6 @@ public class UserServiceImpl implements UserService {
         user.setCredentialsNonExpired(false);
 
         user.setPassword(encoder.encode(user.getPassword()));
-
 
         userDao.saveAndFlush(user);
         LOG.debug("Created user {}",user);
