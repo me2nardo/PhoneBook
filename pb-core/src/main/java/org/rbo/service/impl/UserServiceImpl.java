@@ -27,16 +27,9 @@ public class UserServiceImpl implements UserService {
 
     private final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private AuthorityDao authorityDao;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
+    @Autowired private UserDao userDao;
+    @Autowired private AuthorityDao authorityDao;
+    @Autowired private PasswordEncoder encoder;
 
     /**
      * Register a new user with default authority ROLE_USER
@@ -47,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User registerUser(User user) {
-        //TODO:: Fix UserExistsException
+
         boolean isPreset=userDao.findOneByUsernameOrEmail(user.getUsername(),user.getEmail()).isPresent();
 
         if (isPreset){
