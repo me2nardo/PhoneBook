@@ -4,6 +4,7 @@ import org.rbo.model.User;
 import org.rbo.service.UserService;
 import org.rbo.service.dto.UserDto;
 import org.rbo.service.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -20,11 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
 
-    private UserService userService;
-
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
+    @Autowired private UserService userService;
 
     /**
      * POST  /user  : Creates a new user.

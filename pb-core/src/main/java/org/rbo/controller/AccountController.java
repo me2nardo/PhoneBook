@@ -38,12 +38,9 @@ public class AccountController {
 
     private final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TokenProvider tokenProvider;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    @Autowired private UserService userService;
+    @Autowired private TokenProvider tokenProvider;
+    @Autowired private AuthenticationManager authenticationManager;
 
     /**
      * POST  /register : register the user.
@@ -68,6 +65,7 @@ public class AccountController {
     @PutMapping(path = "/account",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateUser(@Validated @RequestBody UserDto userDto){
+        //TODO:: Implement updateUser
 /*
         userService.updateUser(SecurityUtils.getCurrentUserLogin(),
                 userDto.getLastName(),userDto.getFirstName(),userDto.getName());
@@ -117,5 +115,4 @@ public class AccountController {
         }
     }
 
-    //TODO:: add logout
 }

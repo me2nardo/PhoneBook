@@ -21,7 +21,7 @@ spring:
         database: H2
         persistenceUnitName: DEV-RBO
         properties:
-            hibernate.generate_statistics: "true"
+            #hibernate.generate_statistics: "true"
             hibernate.use_sql_comments: "true"
             hibernate.format_sql: "true"
             hibernate.show_sql: "true"

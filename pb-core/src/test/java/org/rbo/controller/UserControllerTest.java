@@ -33,15 +33,11 @@ public class UserControllerTest {
 
     private MockMvc restMock;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserDao userDao;
+    @Autowired private UserDao userDao;
 
     @Before
     public void setup() {
-        UserController userController = new UserController(userService);
+        UserController userController = new UserController();
         this.restMock = MockMvcBuilders.standaloneSetup(userController).build();
     }
 

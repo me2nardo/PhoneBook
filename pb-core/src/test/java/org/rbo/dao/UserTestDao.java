@@ -3,12 +3,10 @@ package org.rbo.dao;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.rbo.Application;
 import org.rbo.model.Authority;
 import org.rbo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
@@ -23,7 +21,6 @@ import static org.hamcrest.Matchers.is;
  * @author vitalii.levash
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
 @DataJpaTest
 public class UserTestDao {
 

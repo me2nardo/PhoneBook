@@ -27,16 +27,9 @@ public class UserServiceImpl implements UserService {
 
     private final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
-    private AuthorityDao authorityDao;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
+    @Autowired private UserDao userDao;
+    @Autowired private AuthorityDao authorityDao;
+    @Autowired private PasswordEncoder encoder;
 
     /**
      * Register a new user with default authority ROLE_USER
@@ -48,8 +41,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User registerUser(User user) {
 
-        userDao.findOneByUsernameOrEmail(user.getUsername(),user.getEmail())
-                .map(u-> new UserExistsException(u.getUsername(),u.getEmail()));
+        boolean isPreset=userDao.findOneByUsernameOrEmail(user.getUsername(),user.getEmail()).isPresent();
+
+        if (isPreset){
+            throw new UserExistsException(user.getName(),user.getEmail());
+        }
 
         if (user.getAuthority().isEmpty()) {
             Authority authority = authorityDao.findOne("ROLE_USER");
@@ -66,7 +62,6 @@ public class UserServiceImpl implements UserService {
         user.setCredentialsNonExpired(false);
 
         user.setPassword(encoder.encode(user.getPassword()));
-
 
         userDao.saveAndFlush(user);
         LOG.debug("Created user {}",user);
