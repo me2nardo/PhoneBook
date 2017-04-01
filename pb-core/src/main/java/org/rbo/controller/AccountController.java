@@ -31,6 +31,7 @@ import java.util.Collections;
  * Rest controller for managing current user account
  * @author vitalii.levash
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api")
 public class AccountController {
@@ -96,6 +97,8 @@ public class AccountController {
      */
     @PostMapping("/authenticate")
     public ResponseEntity authorize(@Valid @RequestBody LoginVM loginVM, HttpServletResponse response) {
+
+        LOG.info("Start authorize {}",loginVM);
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());

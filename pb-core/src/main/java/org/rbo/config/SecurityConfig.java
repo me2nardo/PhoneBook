@@ -17,8 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,19 +30,16 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String KEY = "Some - demo - key";
-
     private UserDetailsService userDetailsService;
 
     private TokenProvider tokenProvider;
-    private CorsFilter corsFilter;
 
 
     public SecurityConfig(UserDetailsService userDetailsService,
-                          CorsFilter corsFilter,TokenProvider tokenProvider){
+                          TokenProvider tokenProvider){
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
-        this.corsFilter = corsFilter;
+
     }
 
     @Autowired
@@ -74,12 +69,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf()
+                .disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(http401EntryPoint())
                 .and()
-                .csrf()
-                .disable()
                 .headers()
                 .frameOptions()
                 .disable()

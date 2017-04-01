@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs";
+import "rxjs/add/operator/map";
 
 @Injectable()
 export class AuthService {
@@ -13,10 +14,11 @@ export class AuthService {
 
 
   login(username:string,password:string,rememberMe:boolean):Observable<boolean>{
-    return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password ,rememberMe:rememberMe}))
+    return this.http.post('http://localhost:8081/api/authenticate', JSON.stringify({ username: username, password: password ,rememberMe:rememberMe}))
       .map((response: Response) => {
 
         let token = response.json() && response.json().token;
+        console.log("Token:"+token);
         if (token) {
 
           this.token = token;
