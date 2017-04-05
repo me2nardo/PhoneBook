@@ -4,6 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>pb-core</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
 
     <name>pb-core</name>
     <description>The org.rbo backend project</description>
@@ -161,6 +163,30 @@
                         <version>${org.mapstruct.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.3.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <imageName>me2nardo/pb-core</imageName>
+                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
