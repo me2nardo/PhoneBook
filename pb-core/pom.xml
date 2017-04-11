@@ -73,6 +73,14 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.jbehave</groupId>
+            <artifactId>jbehave-core</artifactId>
+            <version>4.1</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <!-- Map Struct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
