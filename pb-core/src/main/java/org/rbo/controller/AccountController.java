@@ -65,12 +65,10 @@ public class AccountController {
     @PutMapping(path = "/account",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity updateUser(@Validated @RequestBody UserDto userDto){
-        //TODO:: Implement updateUser
-/*
-        userService.updateUser(SecurityUtils.getCurrentUserLogin(),
-                userDto.getLastName(),userDto.getFirstName(),userDto.getName());
-                */
 
+        User user = UserMapper.INSTANCE.toUser(userDto);
+
+        userService.updateUser(user);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

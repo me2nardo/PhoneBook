@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
             Set<Authority> authorities = new HashSet<>();
             authorities.add(authority);
             user.setAuthority(authorities);
-            LOG.debug("Default authorities for user %s",user.getUsername());
+            LOG.debug("Default authorities for user {}",user.getUsername());
         } else{
            user.setAuthority(processAuthority(user));
         }
@@ -145,9 +145,9 @@ public class UserServiceImpl implements UserService {
         Set<Authority> authorities = new HashSet<>();
 
         // TODO :: Make batch operation for getting authorities list
-        user.getAuthority().stream().forEach(authority -> authorities.add(authorityDao.findOne(authority.getName())));
+        user.getAuthority().forEach(authority -> authorities.add(authorityDao.findOne(authority.getName())));
 
-        LOG.debug("Custom authorities for user %s",user.getUsername());
+        LOG.debug("Custom authorities for user {}",user.getUsername());
         return authorities;
     }
 }

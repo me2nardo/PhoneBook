@@ -1,6 +1,5 @@
 package org.rbo.controller;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,11 +33,12 @@ public class UserControllerTest {
 
     private MockMvc restMock;
 
+    @Autowired private UserService userService;
     @Autowired private UserDao userDao;
 
     @Before
     public void setup() {
-        UserController userController = new UserController();
+        UserController userController = new UserController(userService);
         this.restMock = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
@@ -46,6 +47,7 @@ public class UserControllerTest {
      */
     @Test
     public void getUserUnknownTest() throws Exception {
+
         restMock.perform(get("/api/user/unknown")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -57,6 +59,7 @@ public class UserControllerTest {
      */
     @Test
     public void getUserTest() throws Exception {
+
         restMock.perform(get("/api/user/sJohn")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -72,8 +75,8 @@ public class UserControllerTest {
         restMock.perform(delete("/api/user/sJohn2"))
                 .andExpect(status().isOk())
                 .andDo(print());
-        Optional<User> user = userDao.findOneByUsername("sJohn2");
-        Assert.assertTrue(!user.isPresent());
+       Optional<User> user = userDao.findOneByUsername("sJohn2");
+       assertFalse(user.isPresent());
     }
 
     //TODO:: add update user test

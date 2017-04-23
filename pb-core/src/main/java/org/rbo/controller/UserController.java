@@ -21,7 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
 
-    @Autowired private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * POST  /user  : Creates a new user.

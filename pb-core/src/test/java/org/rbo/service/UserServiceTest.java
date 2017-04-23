@@ -2,7 +2,6 @@ package org.rbo.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,9 +13,7 @@ import org.rbo.model.User;
 import org.rbo.service.dto.UserDto;
 import org.rbo.service.impl.UserServiceImpl;
 import org.rbo.service.mapper.UserMapper;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
 
@@ -36,8 +33,6 @@ import static org.mockito.Mockito.when;
  * @author vitalii.levash
  * @see org.rbo.service.UserService
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = UserService.class)
 public class UserServiceTest {
 
     @InjectMocks private UserService userService = new UserServiceImpl();
