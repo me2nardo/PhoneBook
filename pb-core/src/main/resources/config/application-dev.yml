@@ -31,7 +31,10 @@ spring:
 
 loggining:
     level.: "DEBUG"
-
+metric:
+  host: 127.0.0.1
+  reportFrequency: 30
+  enabled: true
 server:
     port: 8081
 
