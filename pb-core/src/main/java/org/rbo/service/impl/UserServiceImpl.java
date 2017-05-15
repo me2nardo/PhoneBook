@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         boolean isPreset=userDao.findOneByUsernameOrEmail(user.getUsername(),user.getEmail()).isPresent();
 
         if (isPreset){
-            throw new UserExistsException(user.getName(),user.getEmail());
+            throw new UserExistsException(user.getUsername(),user.getEmail());
         }
 
         if (user.getAuthority().isEmpty()) {
