@@ -10,7 +10,7 @@ public class MetricProperties {
     private String host;
     private int reportFrequency;
     private boolean enabled;
-    private PrometheusProperties prometheusProperties;
+    private Prometheus prometheus;
 
     public String getHost() {
         return host;
@@ -36,15 +36,15 @@ public class MetricProperties {
         this.enabled = enabled;
     }
 
-    public PrometheusProperties getPrometheusProperties() {
-        return prometheusProperties;
+    public Prometheus getPrometheus() {
+        return prometheus;
     }
 
-    public void setPrometheusProperties(PrometheusProperties prometheusProperties) {
-        this.prometheusProperties = prometheusProperties;
+    public void setPrometheus(Prometheus prometheus) {
+        this.prometheus = prometheus;
     }
 
-    public static class PrometheusProperties{
+    public static class Prometheus{
         private boolean enabled;
         private String endPoint;
 

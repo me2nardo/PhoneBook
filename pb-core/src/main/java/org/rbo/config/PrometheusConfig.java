@@ -30,8 +30,8 @@ public class PrometheusConfig implements ServletContextInitializer {
     }
 
     public void onStartup(ServletContext servletContext) throws ServletException {
-        if(this.metricProperties.getPrometheusProperties().isEnabled()) {
-            String endpoint = this.metricProperties.getPrometheusProperties().getEndPoint();
+        if(this.metricProperties.getPrometheus().isEnabled()) {
+            String endpoint = this.metricProperties.getPrometheus().getEndPoint();
             LOG.info("Initializing Metrics Prometheus endpoint at {}", endpoint);
             CollectorRegistry collectorRegistry = new CollectorRegistry();
             collectorRegistry.register(new DropwizardExports(this.metricRegistry));

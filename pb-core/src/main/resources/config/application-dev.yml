@@ -28,13 +28,20 @@ spring:
             hibernate.hbm2ddl.auto: "create"
     thymeleaf:
          cache: "false"
-
+    mail:
+      host: localhost
+      port: 25
+      username:
+      password:
 loggining:
     level.: "DEBUG"
 metric:
   host: 127.0.0.1
   reportFrequency: 30
   enabled: true
+  prometheus:
+    enabled: true
+    endPoint: /metric
 server:
     port: 8081
 
