@@ -6,6 +6,7 @@ import org.rbo.model.User;
 import org.rbo.service.NotificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -21,6 +22,7 @@ import java.util.Locale;
  * Mail notification
  */
 @Service
+@EnableConfigurationProperties(MailProperties.class)
 public class MailNotification implements NotificationService {
 
     private final Logger LOG = LoggerFactory.getLogger(MailNotification.class);

@@ -49,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        //super.configure(web);
+       // super.configure(web);
+        web.ignoring().antMatchers("/api/register");
         web.ignoring().antMatchers("/h2-console/**");
         web.ignoring().antMatchers("/test/**");
 
@@ -83,7 +84,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .and()
