@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return (request,response,exception)-> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
 
     }
-
+    // TODO: Add cors filter
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
